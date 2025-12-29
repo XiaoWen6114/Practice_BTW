@@ -7,7 +7,7 @@ Created on Thu Dec 11 22:52:18 2025
 
 x=input("test: ")
 
-#step 1: convert and sort
+#Step 1: Transform and find F column and L column
 #1
 x=str(x)+'$'
 temp=[]
@@ -23,16 +23,16 @@ L_list=[i[-1] for i in M_array]
 L=''.join(L_list)
 print('Step 1: L list: '+L)
 
-#step 2: constructing a suffix array
+#Step 2: Create suffix array
 SA_array=[]
 for i in range(len(M_array)):
     for j in range(len(x)):
         if M_array[i][j] == '$':
             SA_array.append(str(len(x)-1-j))
             break
-print('Step 2 SA array: '+''.join(SA_array))
+print('Step 2: SA array: '+''.join(SA_array))
 
-#step 3: calculate C(c) array
+#Step 3: Calculate C(c) array
 C_dic={}
 temp=F_list[0]
 C_dic[F_list[0]]=0
@@ -42,13 +42,20 @@ for i in range(len(F_list)):
         temp=F_list[i]
 print('Step 3: C(c) array: '+', '.join(f'{cha}:{pos}' for cha,pos in sorted(C_dic.items(), key=lambda x: x[1])))
 
-#step 4: calculate Occ(c, i)
+#Step 4: Calculate Occ(c,i)
+print('step 4: Occ(c,i):')
 Occ_dic={}
 temp=''.join(sorted(set(x)))
 for i in temp:
     temp1=0
+    Occ_dic[i+',0']=temp1
     for j in range(len(L_list)):
         if L_list[j] == i:
             temp1+=1
-        Occ_dic[i+','+str(j)]=temp1
-print(Occ_dic)
+            print(i+','+str(j+1)+': '+str(temp1), end='\t')
+        if j or L_list[0] == i:
+            Occ_dic[i+','+str(j+1)]=temp1
+        else:
+            Occ_dic[i+','+str(j+1)]=0
+
+#FM index is Occ_dic.
